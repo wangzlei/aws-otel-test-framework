@@ -20,35 +20,12 @@ module "common" {
   source = "../common"
 }
 
-# launch ec2
 module "ec2_setup" {
-  source = "../ec2"
+  source = "./setup"
 
   ami_family = var.ami_family
   amis = var.amis
   testing_ami = var.testing_ami
-  aoc_version = var.aoc_version
-  region = var.region
-  testcase = var.testcase
-  sample_app_image = var.soaking_data_emitter_image
-  skip_validation = true
-
-  # soaking test config
-  soaking_compose_file = "../templates/defaults/soaking_docker_compose.tpl"
-  soaking_data_mode = var.soaking_data_mode
-  soaking_data_rate = var.soaking_data_rate
-  soaking_data_type = var.soaking_data_type
-
-  # negative soaking
-  mock_endpoint = var.negative_soaking ? "http://127.0.0.2" : "mocked-server/put-data"
-
-  # install cwagent
-  install_cwagent = true
-
-  # use our own ssh key name
-  ssh_key_name = "aoc-ssh-key-2020-07-22"
-  sshkey_s3_bucket = "aoc-ssh-key"
-  sshkey_s3_private_key = "aoc-ssh-key-2020-07-22.pem"
 }
 
 locals {
@@ -58,9 +35,6 @@ locals {
   login_user = local.ami_family["login_user"]
   connection_type = local.ami_family["connection_type"]
 }
-
-
-
 
 # create alarm
 ## create cloudwatch alarm base on the metrics emitted by cwagent
@@ -157,5 +131,3 @@ output "collector_instance" {
 output "sample_app_instance" {
   value = module.ec2_setup.sample_app_instance_public_ip
 }
-
-
