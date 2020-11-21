@@ -23,14 +23,11 @@ module "common" {
 module "ec2_setup" {
   source = "./setup"
 
-  ami_family = var.ami_family
-  amis = var.amis
   testing_ami = var.testing_ami
 }
 
 locals {
-  selected_ami = var.amis[var.testing_ami]
-  ami_family = var.ami_family[local.selected_ami["family"]]
+  ami_family = module.ec2_setup.ami_family
   instance_type = local.ami_family["instance_type"]
   login_user = local.ami_family["login_user"]
   connection_type = local.ami_family["connection_type"]

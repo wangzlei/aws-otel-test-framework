@@ -43,15 +43,3 @@ module "ec2_setup" {
   sshkey_s3_bucket = "aoc-ssh-key"
   sshkey_s3_private_key = "aoc-ssh-key-2020-07-22.pem"
 }
-
-output "collector_instance_public_ip" {
-  value = module.ec2_setup.collector_instance_public_ip
-}
-
-output "collector_instance_id" {
-  value = module.ec2_setup.collector_instance_id
-}
-
-output "sample_app_instance_public_ip" {
-  value = module.ec2_setup.sample_app_instance_public_ip
-}
